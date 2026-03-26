@@ -6,7 +6,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: git@github.com:<your-username>/cv-gitops.git
+    repoURL: git@github.com:jakechowdhury/cv-gitops.git
     targetRevision: HEAD
     path: apps/test-app/base
   destination:
