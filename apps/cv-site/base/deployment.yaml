@@ -13,6 +13,8 @@ spec:
       labels:
         app: cv-site
     spec:
+      imagePullSecrets:
+        - name: ghcr-pull-secret
       containers:
         - name: cv-site
           image: ghcr.io/jakechowdhury/cv-site:latest
