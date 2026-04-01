@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cloudflared
+  namespace: cloudflared
+spec:
+  replicas: 2  # two replicas — Cloudflare load-balances across both connectors
+  selector:
+    matchLabels:
+      app: cloudflared
+  template:
+    metadata:
+      labels:
+        app: cloudflared
+    spec:
+      containers:
+        - name: cloudflared
+          image: cloudflare/cloudflared:2024.12.2  # pinned — Renovate bumps
+          args:
+            - tunnel
+            - --no-autoupdate
+            - run
+            - --credentials-file=/etc/cloudflared/credentials.json
+          volumeMounts:
+            - name: credentials
+              mountPath: /etc/cloudflared
+              readOnly: true
+          resources:
+            requests:
+              cpu: 10m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi
+          livenessProbe:
+            httpGet:
+              path: /ready
+              port: 2000
+            initialDelaySeconds: 10
+      volumes:
+        - name: credentials
+          secret:
+            secretName: cloudflared-credentials
