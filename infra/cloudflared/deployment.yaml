@@ -20,11 +20,14 @@ spec:
             - tunnel
             - --no-autoupdate
             - run
-            - --credentials-file=/etc/cloudflared/credentials.json
-          volumeMounts:
-            - name: credentials
-              mountPath: /etc/cloudflared
-              readOnly: true
+            - --token
+            - $(TUNNEL_TOKEN)
+          env:
+            - name: TUNNEL_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: cloudflared-credentials
+                  key: token
           resources:
             requests:
               cpu: 10m
@@ -37,7 +40,3 @@ spec:
               path: /ready
               port: 2000
             initialDelaySeconds: 10
-      volumes:
-        - name: credentials
-          secret:
-            secretName: cloudflared-credentials
