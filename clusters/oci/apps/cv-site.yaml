@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: cv-site
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: git@github.com:jakechowdhury/cv-gitops.git
+    targetRevision: HEAD
+    path: apps/cv-site/overlays/oci
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cv-site
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
