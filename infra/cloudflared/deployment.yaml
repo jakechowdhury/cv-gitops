@@ -15,7 +15,8 @@ spec:
     spec:
       containers:
         - name: cloudflared
-          image: cloudflare/cloudflared:2024.12.2  # pinned — Renovate bumps
+          image: docker.io/cloudflare/cloudflared:2024.12.2
+          # pinned — Renovate bumps
           args:
             - tunnel
             - --no-autoupdate
