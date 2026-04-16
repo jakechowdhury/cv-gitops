@@ -7,7 +7,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`192.168.1.101`) && PathPrefix(`/`)
+    - match: PathPrefix(`/`)
       kind: Rule
       services:
         - name: argocd-server
