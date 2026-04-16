@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: git@github.com:jakechowdhury/cv-gitops.git
     targetRevision: HEAD
-    path: apps/cv-site/overlays/homelab
+    path: apps/cv-site
   destination:
     server: https://kubernetes.default.svc
     namespace: cv-site
