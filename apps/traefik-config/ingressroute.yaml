@@ -11,5 +11,6 @@ spec:
       kind: Rule
       services:
         - name: argocd-server
-          port: 80  # argocd-server in --insecure mode serves HTTP internally
-  tls: {}
+          port: 80
+  tls:
+    secretName: argocd-server-tls

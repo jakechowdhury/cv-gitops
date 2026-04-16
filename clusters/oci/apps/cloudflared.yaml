@@ -8,7 +8,7 @@ spec:
   source:
     repoURL: git@github.com:jakechowdhury/cv-gitops.git
     targetRevision: HEAD
-    path: infra/cloudflared
+    path: apps/cloudflared
   destination:
     server: https://kubernetes.default.svc
     namespace: cloudflared
