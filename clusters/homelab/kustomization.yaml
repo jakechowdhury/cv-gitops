@@ -3,3 +3,5 @@ kind: Kustomization
 resources:
   - apps/cv-site.yaml
   - apps/cloudflared.yaml
+  - apps/traefik.yaml
+  - apps/traefik-config.yaml
