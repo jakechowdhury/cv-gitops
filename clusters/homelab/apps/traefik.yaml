@@ -1,19 +1,25 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: traefik-ingress
+  name: traefik
   namespace: argocd
   annotations:
     argocd.argoproj.io/sync-wave: "1"
 spec:
   project: default
-  source:
-    repoURL: git@github.com:jakechowdhury/cv-gitops.git
-    targetRevision: HEAD
-    path: apps/traefik
+  sources:
+    - repoURL: https://helm.traefik.io/traefik
+      chart: traefik
+      targetRevision: "32.1.1"
+      helm:
+        valueFiles:
+          - $values/apps/traefik/values/default.yaml
+    - repoURL: git@github.com:jakechowdhury/cv-gitops.git
+      targetRevision: HEAD
+      ref: values
   destination:
     server: https://kubernetes.default.svc
-    namespace: argocd
+    namespace: traefik
   syncPolicy:
     automated:
       prune: true

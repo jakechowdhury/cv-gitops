@@ -1,35 +1,28 @@
 apiVersion: argoproj.io/v1alpha1
-kind: ApplicationSet
+kind: Application
 metadata:
   name: traefik
   namespace: argocd
+  annotations:
+    argocd.argoproj.io/sync-wave: "1"
 spec:
-  generators:
-    - list:
-        elements:
-          - cluster: homelab
-          - cluster: oci
-  template:
-    metadata:
-      name: traefik
-    spec:
-      project: default
-      sources:
-        - repoURL: https://helm.traefik.io/traefik
-          chart: traefik
-          targetRevision: "32.1.1"  # pinned — Renovate bumps
-          helm:
-            valueFiles:
-              - $values/apps/traefik/values/default.yaml
-        - repoURL: git@github.com:jakechowdhury/cv-gitops.git
-          targetRevision: HEAD
-          ref: values
-      destination:
-        server: https://kubernetes.default.svc
-        namespace: traefik
-      syncPolicy:
-        automated:
-          prune: true
-          selfHeal: true
-        syncOptions:
-          - CreateNamespace=true
+  project: default
+  sources:
+    - repoURL: https://helm.traefik.io/traefik
+      chart: traefik
+      targetRevision: "32.1.1"
+      helm:
+        valueFiles:
+          - $values/apps/traefik/values/default.yaml
+    - repoURL: git@github.com:jakechowdhury/cv-gitops.git
+      targetRevision: HEAD
+      ref: values
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traefik
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
