@@ -1,0 +1,14 @@
+# IDE
+.idea/
+.vscode/
+*.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Secrets / local overrides
+*.env
+*.env.local
+secrets.yaml
+secret.yaml

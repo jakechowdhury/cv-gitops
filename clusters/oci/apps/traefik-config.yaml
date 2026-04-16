@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: git@github.com:jakechowdhury/cv-gitops.git
     targetRevision: HEAD
-    path: apps/traefik-config
+    path: apps/traefik-config/base
   destination:
     server: https://kubernetes.default.svc
     namespace: argocd
