@@ -12,8 +12,31 @@ spec:
       chart: traefik
       targetRevision: "32.1.1"
       helm:
-        valueFiles:
-          - $values/apps/traefik/values/default.yaml
+        values: |
+          service:
+            type: NodePort
+
+          ports:
+            web:
+              nodePort: 30080
+            websecure:
+              nodePort: 30443
+
+          # Dashboard accessible via port-forward only — not exposed externally
+          dashboard:
+            enabled: true
+
+          additionalArguments:
+            # Allows Traefik to route to ArgoCD's self-signed cert without verification errors
+            - "--serversTransport.insecureSkipVerify=true"
+
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
     - repoURL: git@github.com:jakechowdhury/cv-gitops.git
       targetRevision: HEAD
       ref: values
