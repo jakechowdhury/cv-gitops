@@ -2,12 +2,14 @@ name: Verify image signature
 
 on:
   pull_request:
+    types: [opened, labeled, synchronize, reopened]
     paths:
       - apps/cv-site/kustomization.yaml
 
 jobs:
   cosign-verify:
     runs-on: ubuntu-latest
+    if: contains(github.event.pull_request.labels.*.name, 'cv-release')
     permissions:
       contents: read
       packages: read
