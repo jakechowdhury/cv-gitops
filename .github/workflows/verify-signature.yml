@@ -29,13 +29,13 @@ jobs:
       - name: Extract image reference
         id: image
         run: |
-          NAME=$(yq '.images[0].name' apps/cv-site/kustomization.yaml)
-          TAG=$(yq '.images[0].newTag' apps/cv-site/kustomization.yaml)
-          echo "ref=${NAME}:${TAG}" >> $GITHUB_OUTPUT
+          IMAGE=$(grep 'name:' apps/cv-site/kustomization.yaml | awk '{print $2}')
+          DIGEST=$(grep 'digest:' apps/cv-site/kustomization.yaml | awk '{print $2}')
+          echo "ref=${IMAGE}@${DIGEST}" >> $GITHUB_OUTPUT
 
-      - name: Verify image signature
+      - name: Verify cosign signature
         run: |
           cosign verify \
-            --certificate-identity-regexp "https://github.com/jakechowdhury/cv-site/.github/workflows/release.yml@refs/" \
+            --certificate-identity-regexp "https://github.com/jakechowdhury/cv-site/.github/workflows/release.yml@refs/tags/.*" \
             --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
             ${{ steps.image.outputs.ref }}
