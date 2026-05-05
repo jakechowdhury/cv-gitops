@@ -1,0 +1,52 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: [--allow-multiple-documents]
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  - repo: https://github.com/Yelp/detect-secrets
+    rev: v1.5.0
+    hooks:
+      - id: detect-secrets
+        args: ['--baseline', '.secrets.baseline']
+
+  - repo: https://github.com/bridgecrewio/checkov
+    rev: 3.2.0
+    hooks:
+      - id: checkov
+        language_version: python3.12
+        args:
+          - --framework=kubernetes
+          - --config-file=.checkov.yaml
+
+  - repo: https://github.com/adrienverge/yamllint
+    rev: v1.35.1
+    hooks:
+      - id: yamllint
+        args: [-c=.yamllint.yaml]
+
+  - repo: local
+    hooks:
+      - id: kustomize-build-cv-site
+        name: kustomize build cv-site
+        language: system
+        entry: kustomize build apps/cv-site
+        pass_filenames: false
+        files: apps/cv-site/
+      - id: kustomize-build-cloudflared
+        name: kustomize build cloudflared
+        language: system
+        entry: kustomize build apps/cloudflared
+        pass_filenames: false
+        files: apps/cloudflared/
+      - id: kustomize-build-traefik-config
+        name: kustomize build traefik-config
+        language: system
+        entry: kustomize build apps/traefik-config
+        pass_filenames: false
+        files: apps/traefik-config/
