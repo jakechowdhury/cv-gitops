@@ -5,4 +5,5 @@ resources:
   - service.yaml
 images:
   - name: ghcr.io/jakechowdhury/cv-site
-    newTag: 0.1.8  # bumped to git SHA by cv-site CI pipeline via PR
+    newTag: 0.2.3  # bumped to git SHA by cv-site CI pipeline via PR
+    digest: sha256:a8be8aa5af30583ecc88a8d04bef83174be37fcd22de3c25f89e72e72ee5ef9e
