@@ -1,0 +1,31 @@
+name: Verify image signature
+
+on:
+  pull_request:
+    paths:
+      - apps/cv-site/kustomization.yaml
+
+jobs:
+  cosign-verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Extract image reference
+        id: image
+        run: |
+          NAME=$(yq '.images[0].name' apps/cv-site/kustomization.yaml)
+          TAG=$(yq '.images[0].newTag' apps/cv-site/kustomization.yaml)
+          echo "ref=${NAME}:${TAG}" >> $GITHUB_OUTPUT
+
+      - name: Verify image signature
+        run: |
+          cosign verify \
+            --certificate-identity-regexp "https://github.com/jakechowdhury/cv-site/.github/workflows/release.yml@refs/" \
+            --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+            ${{ steps.image.outputs.ref }}

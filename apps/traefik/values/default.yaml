@@ -1,0 +1,22 @@
+service:
+  type: NodePort
+
+ports:
+  web:
+    nodePort: 30080
+  websecure:
+    nodePort: 30443
+
+dashboard:
+  enabled: true
+
+additionalArguments:
+  - "--serversTransport.insecureSkipVerify=true"
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi

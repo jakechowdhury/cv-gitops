@@ -1,0 +1,17 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended"],
+  "enabledManagers": ["argocd", "kubernetes", "pre-commit"],
+  "argocd": {
+    "fileMatch": ["clusters/.+\\.yaml$"]
+  },
+  "kubernetes": {
+    "fileMatch": ["apps/.+\\.yaml$"]
+  },
+  "packageRules": [
+    {
+      "matchPackageNames": ["ghcr.io/jakechowdhury/cv-site"],
+      "enabled": false
+    }
+  ]
+}
